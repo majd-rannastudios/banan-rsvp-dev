@@ -13,9 +13,12 @@ import { useLocale } from "@/lib/i18n/context";
  */
 export function LogoLockup({
   size = "md",
+  tone = "dark",
   showSecondarySlot = false,
 }: {
   size?: "sm" | "md" | "lg";
+  /** "dark" = for light backgrounds (default body text colors). "light" = for dark/hero backgrounds (white text). */
+  tone?: "dark" | "light";
   showSecondarySlot?: boolean;
 }) {
   const dimensions = {
@@ -25,11 +28,11 @@ export function LogoLockup({
   }[size];
 
   return (
-    <div className="flex items-center gap-3">
+    <div className={`flex items-center gap-3 ${tone === "light" ? "text-white" : "text-text"}`}>
       <BananCrest className={dimensions.crest} />
       <div className="min-w-0">
         <BrandName className={dimensions.name} />
-        <BrandSubtitle className={dimensions.sub} />
+        <BrandSubtitle className={dimensions.sub} tone={tone} />
       </div>
       {showSecondarySlot ? (
         <>
@@ -62,11 +65,19 @@ function BrandName({ className }: { className?: string }) {
   );
 }
 
-function BrandSubtitle({ className }: { className?: string }) {
+function BrandSubtitle({
+  className,
+  tone,
+}: {
+  className?: string;
+  tone: "dark" | "light";
+}) {
   const { t } = useLocale();
   return (
     <div
-      className={`${className} mt-1 leading-none tracking-[0.22em] text-text-muted uppercase`}
+      className={`${className} mt-1 leading-none tracking-[0.22em] uppercase ${
+        tone === "light" ? "text-white/75" : "text-text-muted"
+      }`}
     >
       {t("brandSubtitle")}
     </div>

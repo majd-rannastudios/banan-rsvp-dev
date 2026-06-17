@@ -23,6 +23,8 @@
 @theme inline {
   --color-surface: var(--banan-white);
   --color-surface-muted: var(--banan-sage);
+  --color-sage: var(--banan-sage);
+  --color-deep: var(--banan-deep);
   --color-accent: var(--banan-olive);
   --color-text: var(--banan-deep);
   --color-text-strong: var(--banan-black);
@@ -55,3 +57,16 @@ body {
 /* Logical-property RTL defaults: dir is set on <html>, components should
    prefer ps-/pe-/ms-/me-/text-start/text-end utilities over left/right ones
    so mirroring is automatic and no per-component RTL overrides are needed. */
+
+/* Brand-color hero treatment standing in for photography (none exists yet).
+   A deep-to-mid-olive diagonal field with a faint hairline overlay. */
+.hero-texture {
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0 1px,
+      transparent 1px 18px
+    ),
+    linear-gradient(160deg, var(--banan-deep) 0%, #4d6b35 55%, var(--banan-olive) 100%);
+}
+

@@ -8,4 +8,9 @@ export const commonDictionary = {
     ar: "لا يمكن الوصول إلى هذا الموقع إلا من خلال رابط دعوة شخصي تم إرساله للضيوف المؤكدين.",
   },
   organizerLogin: { en: "Organizer login", ar: "دخول المنظمين" },
+  previewSampleInvite: { en: "Preview a sample invitation", ar: "معاينة دعوة نموذجية" },
+  previewSampleHint: {
+    en: "Guests never log in — each receives a personal link like this one.",
+    ar: "لا يقوم الضيوف بتسجيل الدخول أبداً — يحصل كل ضيف على رابط شخصي مثل هذا.",
+  },
 } as const;

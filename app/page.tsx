@@ -1,5 +1,5 @@
-import { LogoLockup } from "@/components/brand/logo-lockup";
 import { LanguageToggle } from "@/components/ui/language-toggle";
+import { LogoLockup } from "@/components/brand/logo-lockup";
 import { HomeCopy } from "./home-copy";
 
 export default function Home() {
@@ -12,12 +12,12 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex flex-1 items-center justify-center px-5 py-16">
+      <div className="hero-texture flex flex-1 items-center justify-center px-5 py-20 sm:py-28">
         <div className="w-full max-w-md text-center">
-          <LogoLockup size="lg" />
+          <LogoLockup size="lg" tone="light" />
           <HomeCopy />
         </div>
-      </main>
+      </div>
     </div>
   );
 }
