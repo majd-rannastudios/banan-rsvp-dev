@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  /* Banan Corporate Master Brand Guidelines 2024 — primary palette */
+  --banan-sage: #dfe3b7; /* light sage — backgrounds/decorative fills only, fails AA for text */
+  --banan-olive: #95a76a; /* mid olive — decorative fills, chart accents only, fails AA for text */
+  --banan-deep: #405e2d; /* deep olive — body text, headings, primary interactive (~7.5:1 on white) */
+  --banan-deep-hover: #34501f; /* manual darken of deep olive for hover states */
+
+  /* secondary palette */
+  --banan-grey: #757274; /* secondary/muted text only (~4.6:1 on white, just clears AA) */
+  --banan-black: #000000;
+  --banan-white: #ffffff;
+
+  /* pragmatic addition: brand guide defines no error/danger color */
+  --banan-danger: #9c3a2a;
+  --banan-danger-bg: #f7e9e6;
+
+  --background: var(--banan-white);
+  --foreground: var(--banan-black);
+}
+
+@theme inline {
+  --color-surface: var(--banan-white);
+  --color-surface-muted: var(--banan-sage);
+  --color-accent: var(--banan-olive);
+  --color-text: var(--banan-deep);
+  --color-text-strong: var(--banan-black);
+  --color-text-muted: var(--banan-grey);
+  --color-interactive: var(--banan-deep);
+  --color-interactive-hover: var(--banan-deep-hover);
+  --color-danger: var(--banan-danger);
+  --color-danger-bg: var(--banan-danger-bg);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-latin: var(--font-open-sans);
+  --font-arabic: var(--font-arabic-sub);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-latin);
+}
+
+/* Font family follows the `dir` attribute on <html>, which the locale
+   context keeps in sync with the active language — no manual class
+   toggling needed when the language is switched client-side. */
+[dir="rtl"] body {
+  font-family: var(--font-arabic);
+}
+
+/* Logical-property RTL defaults: dir is set on <html>, components should
+   prefer ps-/pe-/ms-/me-/text-start/text-end utilities over left/right ones
+   so mirroring is automatic and no per-component RTL overrides are needed. */

@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Banan · Inauguration Digital System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --olive:#3D481E;
+  --olive-deep:#2C351411;
+  --olive-ink:#2E3617;
+  --gold:#C2A24C;
+  --gold-soft:#D9C48A;
+  --gold-line:#E4D7AE;
+  --cream:#F6F2E8;
+  --cream-2:#FCFAF3;
+  --paper:#FFFFFF;
+  --ink:#23241C;
+  --muted:#7A786A;
+  --line:#E8E2D2;
+  --ok:#5E7A2E;
+  --warn:#B07D2A;
+  --shadow:0 1px 2px rgba(45,52,20,.05),0 12px 34px -18px rgba(45,52,20,.22);
+  --r:0px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Jost",system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  font-weight:300;
+  letter-spacing:.01em;
+}
+body[dir="rtl"]{font-family:"Tajawal",system-ui,sans-serif;font-weight:400}
+.serif{font-family:"Cormorant Garamond",serif}
+button{font-family:inherit;cursor:pointer}
+a{color:inherit}
+
+/* ---------- top chrome ---------- */
+.chrome{
+  position:sticky;top:0;z-index:40;
+  background:var(--olive);
+  color:#F3EFE2;
+  border-bottom:1px solid rgba(0,0,0,.18);
+}
+.chrome-in{
+  max-width:1180px;margin:0 auto;padding:13px 22px;
+  display:flex;align-items:center;gap:18px;
+}
+.lockup{display:flex;align-items:center;gap:12px;min-width:0}
+.crest{
+  width:34px;height:34px;flex:none;border:1px solid var(--gold-soft);
+  display:grid;place-items:center;color:var(--gold-soft);
+  font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;
+}
+.brand-name{font-family:"Cormorant Garamond",serif;font-size:20px;letter-spacing:.32em;text-transform:uppercase;line-height:1}
+.brand-sub{font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-soft);margin-top:3px}
+.chrome-spacer{flex:1}
+.partner-tag{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:rgba(243,239,226,.6);border:1px solid rgba(243,239,226,.22);padding:5px 9px}
+
+.segmented{display:flex;border:1px solid rgba(217,196,138,.4)}
+.segmented button{
+  background:transparent;border:0;color:rgba(243,239,226,.72);
+  font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  padding:8px 15px;transition:.18s;
+}
+.segmented button.on{background:var(--gold);color:var(--olive-ink);font-weight:500}
+.lang{
+  background:transparent;border:1px solid rgba(217,196,138,.4);color:var(--gold-soft);
+  font-size:10.5px;letter-spacing:.12em;padding:8px 12px;text-transform:uppercase;
+}
+
+/* organizer nav */
+.subnav{background:var(--cream-2);border-bottom:1px solid var(--line)}
+.subnav-in{max-width:1180px;margin:0 auto;padding:0 22px;display:flex;gap:2px;overflow:auto}
+.subnav button{
+  background:transparent;border:0;border-bottom:2px solid transparent;
+  color:var(--muted);padding:14px 16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;
+}
+.subnav button.on{color:var(--olive-ink);border-bottom-color:var(--gold)}
+
+/* ---------- layout shells ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:34px 22px 70px}
+.hidden{display:none!important}
+.eyebrow{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin:0 0 8px}
+.muted{color:var(--muted)}
+
+/* ---------- GUEST: invitation ---------- */
+.invite-stage{
+  display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:46px;align-items:center;
+}
+@media(max-width:900px){.invite-stage{grid-template-columns:1fr;gap:30px}}
+.invite-copy h1{
+  font-family:"Cormorant Garamond",serif;font-weight:500;
+  font-size:clamp(38px,6vw,62px);line-height:1.02;margin:6px 0 0;color:var(--olive-ink);
+}
+.invite-copy h1 em{font-style:italic;color:var(--gold)}
+.invite-lead{font-size:15px;line-height:1.7;color:#54564a;max-width:46ch;margin:20px 0 0;font-weight:300}
+.facts{display:flex;flex-wrap:wrap;gap:30px;margin:28px 0 0}
+.fact .k{font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+.fact .v{font-family:"Cormorant Garamond",serif;font-size:21px;color:var(--olive-ink);margin-top:3px}
+.cta-row{display:flex;gap:14px;align-items:center;margin:34px 0 0;flex-wrap:wrap}
+.btn{
+  border:0;padding:15px 30px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--olive);color:#F3EFE2;transition:.2s;
+}
+.btn:hover{background:#33401a}
+.btn.gold{background:var(--gold);color:var(--olive-ink);font-weight:500}
+.btn.gold:hover{background:#b59440}
+.btn.ghost{background:transparent;border:1px solid var(--olive);color:var(--olive-ink)}
+.btn.ghost:hover{background:var(--olive);color:#F3EFE2}
+.hashtag{font-size:13px;letter-spacing:.04em;color:var(--olive-ink);margin-top:20px}
+.hashtag b{color:var(--gold);font-weight:500}
+
+/* phone / card */
+.phone{
+  justify-self:center;width:330px;background:#10130a;border-radius:34px;padding:11px;
+  box-shadow:0 40px 80px -40px rgba(45,52,20,.6);border:1px solid #2a3014;
+}
+.phone-screen{border-radius:25px;overflow:hidden;background:var(--cream-2);position:relative}
+.invite-card{padding:0 0 22px}
+.invite-photo{
+  height:188px;
+  background:
+    linear-gradient(180deg,rgba(44,53,20,0) 40%,rgba(28,33,12,.78) 100%),
+    radial-gradient(120% 90% at 30% 0%,#9caa6e 0%,#6f7d49 38%,#3e481f 100%);
+  position:relative;
+}
+.invite-photo::after{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 2px,transparent 2px 16px);
+}
+.invite-logos{position:absolute;top:14px;left:0;right:0;display:flex;justify-content:center;gap:14px;align-items:center;z-index:2}
+.invite-logos .il{color:#F3EFE2;font-family:"Cormorant Garamond",serif;letter-spacing:.18em;font-size:13px}
+.invite-logos .div{width:1px;height:14px;background:rgba(243,239,226,.5)}
+.invite-body{padding:20px 24px 0;text-align:center}
+.invite-pre{font-size:8.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);line-height:1.8}
+.invite-title{font-family:"Cormorant Garamond",serif;font-size:27px;letter-spacing:.06em;color:var(--olive-ink);margin:9px 0 2px;line-height:1.05}
+.invite-loc{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.invite-meta{display:flex;justify-content:center;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:4px 0 18px}
+.invite-meta div{flex:1;padding:11px 4px}
+.invite-meta div+div{border-left:1px solid var(--line)}
+.invite-meta .mk{font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.invite-meta .mv{font-family:"Cormorant Garamond",serif;font-size:13px;color:var(--olive-ink);margin-top:3px}
+.invite-rsvp{background:var(--olive);color:#F3EFE2;border:0;width:100%;padding:13px;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase}
+.video-chip{display:inline-flex;align-items:center;gap:7px;margin:14px 0 0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.video-chip .play{width:22px;height:22px;border:1px solid var(--gold);color:var(--gold);border-radius:50%;display:grid;place-items:center;font-size:9px}
+
+/* ---------- GUEST: form ---------- */
+.panel{background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow)}
+.form-shell{max-width:760px;margin:0 auto}
+.form-head{padding:30px 36px;border-bottom:1px solid var(--line);text-align:center}
+.form-head h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:34px;color:var(--olive-ink);margin:6px 0 0}
+.form-grid{padding:30px 36px;display:grid;grid-template-columns:1fr 1fr;gap:20px 24px}
+@media(max-width:680px){.form-grid{grid-template-columns:1fr;padding:24px}}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+.field label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--olive-ink)}
+.field label .req{color:var(--gold)}
+.field input,.field select{
+  border:1px solid var(--line);background:var(--cream-2);padding:13px 14px;
+  font-family:inherit;font-size:14px;color:var(--ink);transition:.16s;
+}
+.field input:focus,.field select:focus{outline:0;border-color:var(--gold);background:#fff}
+.guests-step{display:flex;align-items:center;gap:0;border:1px solid var(--line);width:fit-content;background:var(--cream-2)}
+.guests-step button{background:transparent;border:0;padding:12px 16px;font-size:16px;color:var(--olive-ink)}
+.guests-step span{min-width:48px;text-align:center;font-family:"Cormorant Garamond",serif;font-size:18px}
+.toggle-row{display:flex;gap:10px;flex-wrap:wrap}
+.chip-opt{border:1px solid var(--line);background:var(--cream-2);padding:11px 16px;font-size:12px;letter-spacing:.04em;color:var(--muted)}
+.chip-opt.on{border-color:var(--gold);background:#fff;color:var(--olive-ink)}
+.form-foot{padding:0 36px 32px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.err{color:#9c3a2a;font-size:12px}
+
+/* ---------- GUEST: confirmation / pass ---------- */
+.confirm-stage{display:grid;grid-template-columns:360px minmax(0,1fr);gap:44px;align-items:start}
+@media(max-width:840px){.confirm-stage{grid-template-columns:1fr}}
+.badge{
+  background:var(--cream-2);border:1px solid var(--gold-line);position:relative;
+  box-shadow:var(--shadow);padding:0 0 26px;text-align:center;
+}
+.badge-top{background:var(--olive);color:#F3EFE2;padding:18px;text-align:center}
+.badge-top .bt-name{font-family:"Cormorant Garamond",serif;letter-spacing:.3em;font-size:16px}
+.badge-top .bt-sub{font-size:8px;letter-spacing:.3em;color:var(--gold-soft);margin-top:4px}
+.badge-pre{font-size:8.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin:22px 0 4px}
+.badge-name{font-family:"Cormorant Garamond",serif;font-size:30px;color:var(--olive-ink);line-height:1.05;padding:0 18px}
+.badge-role{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-top:7px}
+.qr-frame{margin:20px auto 12px;width:170px;height:170px;background:#fff;border:1px solid var(--gold-line);padding:11px;display:grid;place-items:center}
+.qr-frame img,.qr-frame canvas{width:100%!important;height:100%!important}
+.badge-id{font-size:10px;letter-spacing:.22em;color:var(--muted)}
+.badge-meta{display:flex;border-top:1px dashed var(--gold-line);margin:18px 16px 0}
+.badge-meta div{flex:1;padding:12px 4px}
+.badge-meta div+div{border-left:1px dashed var(--gold-line)}
+.badge-meta .bk{font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.badge-meta .bv{font-family:"Cormorant Garamond",serif;font-size:14px;color:var(--olive-ink);margin-top:3px}
+.confirm-copy .tick{width:46px;height:46px;border:1px solid var(--ok);color:var(--ok);border-radius:50%;display:grid;place-items:center;font-size:20px;margin-bottom:16px}
+.confirm-copy h2{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:36px;color:var(--olive-ink);margin:0}
+.next-list{list-style:none;padding:0;margin:22px 0 0}
+.next-list li{display:flex;gap:14px;padding:15px 0;border-top:1px solid var(--line);font-size:14px;color:#54564a}
+.next-list li .n{flex:none;width:26px;height:26px;border:1px solid var(--gold);color:var(--gold);display:grid;place-items:center;font-size:11px;font-family:"Cormorant Garamond",serif}
+.deliver{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 0}
+.deliver .d{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--olive-ink);border:1px solid var(--line);padding:8px 12px;background:var(--cream-2)}
+
+/* ---------- ORGANIZER ---------- */
+.page-title{font-family:"Cormorant Garamond",serif;font-weight:500;font-size:34px;color:var(--olive-ink);margin:0}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:26px 0 0}
+@media(max-width:820px){.stat-row{grid-template-columns:1fr 1fr}}
+.stat{background:var(--paper);border:1px solid var(--line);padding:22px;box-shadow:var(--shadow)}
+.stat .sk{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.stat .sv{font-family:"Cormorant Garamond",serif;font-size:40px;color:var(--olive-ink);line-height:1;margin-top:8px}
+.stat .sd{font-size:11px;color:var(--gold);margin-top:8px;letter-spacing:.04em}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+@media(max-width:820px){.grid-2{grid-template-columns:1fr}}
+.card{background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow)}
+.card-h{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.card-h h3{margin:0;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--olive-ink)}
+.card-b{padding:20px}
+.bar-row{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.bar-row .bl{width:120px;font-size:12px;color:#54564a;flex:none}
+.bar-track{flex:1;height:9px;background:var(--cream);border:1px solid var(--line)}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-soft),var(--gold))}
+.bar-row .bn{width:34px;text-align:right;font-family:"Cormorant Garamond",serif;font-size:15px;color:var(--olive-ink)}
+.spark{display:flex;align-items:flex-end;gap:7px;height:120px;padding-top:8px}
+.spark .sb{flex:1;background:linear-gradient(180deg,var(--gold-soft),var(--gold));min-height:4px;position:relative}
+.spark .sb span{position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-size:9px;color:var(--muted)}
+
+/* table */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:24px 0 16px}
+.toolbar input[type=text]{border:1px solid var(--line);background:#fff;padding:11px 14px;font-family:inherit;font-size:13px;min-width:220px}
+.toolbar select{border:1px solid var(--line);background:#fff;padding:11px 12px;font-family:inherit;font-size:13px;color:var(--ink)}
+.tbl-wrap{background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow);overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+thead th{
+  text-align:left;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--cream-2);white-space:nowrap;
+}
+tbody td{padding:14px 16px;border-bottom:1px solid var(--line);font-size:13.5px;color:#3f4035}
+tbody tr:hover{background:var(--cream-2)}
+.gname{font-family:"Cormorant Garamond",serif;font-size:16px;color:var(--olive-ink)}
+.pill{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pill.in{border-color:var(--ok);color:var(--ok)}
+.pill.pend{border-color:var(--warn);color:var(--warn)}
+.pill.transfer{border-color:var(--gold);color:#9c7e2c}
+.mini{font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:transparent;border:1px solid var(--line);padding:7px 12px;color:var(--olive-ink)}
+.mini:hover{border-color:var(--olive);background:var(--olive);color:#F3EFE2}
+
+/* broadcasts */
+.bc-grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:18px;margin-top:24px}
+@media(max-width:820px){.bc-grid{grid-template-columns:1fr}}
+.seg-item{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border:1px solid var(--line);background:var(--paper);margin-bottom:10px;cursor:pointer}
+.seg-item.on{border-color:var(--gold);box-shadow:inset 3px 0 0 var(--gold)}
+.seg-item .sn{font-size:13px;color:var(--olive-ink)}
+.seg-item .sc{font-family:"Cormorant Garamond",serif;font-size:18px;color:var(--gold)}
+.channels{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 18px}
+.compose textarea{width:100%;border:1px solid var(--line);background:var(--cream-2);padding:14px;font-family:inherit;font-size:14px;min-height:120px;resize:vertical}
+.compose textarea:focus{outline:0;border-color:var(--gold);background:#fff}
+.send-note{font-size:12px;color:var(--muted);margin-top:10px}
+
+/* check-in */
+.checkin-stage{display:grid;grid-template-columns:300px minmax(0,1fr);gap:30px;margin-top:24px;align-items:start}
+@media(max-width:760px){.checkin-stage{grid-template-columns:1fr}}
+.scanner{aspect-ratio:1;background:#10130a;border:1px solid #2a3014;position:relative;display:grid;place-items:center;overflow:hidden}
+.scan-box{width:62%;aspect-ratio:1;border:1px solid var(--gold-soft);position:relative}
+.scan-box::before,.scan-box::after{content:"";position:absolute;width:20px;height:20px;border:2px solid var(--gold)}
+.scan-box::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.scan-box::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.scan-line{position:absolute;left:8%;right:8%;height:2px;background:var(--gold);box-shadow:0 0 12px var(--gold);animation:scan 2.4s ease-in-out infinite}
+@keyframes scan{0%,100%{top:14%}50%{top:84%}}
+.scan-hint{position:absolute;bottom:16px;left:0;right:0;text-align:center;color:var(--gold-soft);font-size:9px;letter-spacing:.24em;text-transform:uppercase}
+.checkin-result{min-height:130px}
+.result-card{display:flex;gap:16px;align-items:center;background:var(--paper);border:1px solid var(--line);padding:18px;box-shadow:var(--shadow)}
+.result-card .ravatar{width:54px;height:54px;flex:none;background:var(--olive);color:var(--gold-soft);display:grid;place-items:center;font-family:"Cormorant Garamond",serif;font-size:22px}
+.result-card .rn{font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--olive-ink)}
+.recent-checkins{margin-top:24px}
+.ci-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--line);font-size:13px}
+
+.foot-demo{max-width:1180px;margin:0 auto;padding:18px 22px 40px;color:var(--muted);font-size:11px;letter-spacing:.1em;text-transform:uppercase;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+/* toast */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--olive-ink);color:#F3EFE2;padding:14px 22px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:0;transition:.3s;z-index:80;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+[dir="rtl"] .invite-meta div+div,[dir="rtl"] .badge-meta div+div{border-left:0;border-right:1px solid var(--line)}
+</style>
+</head>
+<body dir="ltr">
+
+<!-- ===== TOP CHROME ===== -->
+<div class="chrome">
+  <div class="chrome-in">
+    <div class="lockup">
+      <div class="crest">B</div>
+      <div>
+        <div class="brand-name">Banan</div>
+        <div class="brand-sub" data-i="brandsub">Residential Villas · Riyadh</div>
+      </div>
+    </div>
+    <div class="chrome-spacer"></div>
+    <div class="partner-tag">TMG × intouch</div>
+    <div class="segmented">
+      <button id="mode-guest" class="on" onclick="setMode('guest')" data-i="mGuest">Guest</button>
+      <button id="mode-org" onclick="setMode('org')" data-i="mOrg">Organizer</button>
+    </div>
+    <button class="lang" onclick="toggleLang()" id="langBtn">العربية</button>
+  </div>
+</div>
+
+<!-- organizer subnav -->
+<div class="subnav hidden" id="subnav">
+  <div class="subnav-in">
+    <button class="on" data-tab="dash" onclick="setTab('dash')" data-i="tDash">Dashboard</button>
+    <button data-tab="guests" onclick="setTab('guests')" data-i="tGuests">Guest List</button>
+    <button data-tab="broadcast" onclick="setTab('broadcast')" data-i="tBroadcast">Broadcasts</button>
+    <button data-tab="checkin" onclick="setTab('checkin')" data-i="tCheckin">On-site Check-in</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     GUEST EXPERIENCE
+========================================================= -->
+<div id="guest">
+
+  <!-- INVITATION -->
+  <div class="wrap" id="g-invite">
+    <div class="invite-stage">
+      <div class="invite-copy">
+        <p class="eyebrow" data-i="invEyebrow">You are cordially invited</p>
+        <h1 data-i="invH1">Inauguration of <em>Banan</em> Residential Villas</h1>
+        <p class="invite-lead" data-i="invLead">An evening to unveil Riyadh's newest landmark in elevated living. Join the Talaat Moustafa Group family for the official opening of Banan.</p>
+        <div class="facts">
+          <div class="fact"><div class="k" data-i="fDate">Date</div><div class="v">Sat · 23 May 2026</div></div>
+          <div class="fact"><div class="k" data-i="fTime">Time</div><div class="v">6:00 PM</div></div>
+          <div class="fact"><div class="k" data-i="fLoc">Location</div><div class="v" data-i="fLocV">Banan Pavilion</div></div>
+        </div>
+        <p class="hashtag">#<b>BananRiyadh</b> · #<b>بنان_الرياض</b></p>
+        <div class="cta-row">
+          <button class="btn gold" onclick="showGuest('g-form')" data-i="ctaRsvp">RSVP now</button>
+          <span class="video-chip"><span class="play">▶</span><span data-i="ctaVideo">Watch the film</span></span>
+        </div>
+      </div>
+
+      <!-- phone preview of the digital invite -->
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="invite-card">
+            <div class="invite-photo">
+              <div class="invite-logos">
+                <span class="il">Banan</span><span class="div"></span><span class="il">TMG</span>
+              </div>
+            </div>
+            <div class="invite-body">
+              <div class="invite-pre" data-i="cardPre">You are cordially invited to the inauguration of</div>
+              <div class="invite-title">Banan Residential Villas</div>
+              <div class="invite-loc" data-i="cardLoc">Al Riyadh</div>
+              <div class="invite-meta">
+                <div><div class="mk" data-i="fDate">Date</div><div class="mv">23 May</div></div>
+                <div><div class="mk" data-i="fTime">Time</div><div class="mv">6:00 PM</div></div>
+                <div><div class="mk" data-i="fLoc">Venue</div><div class="mv" data-i="cardVenue">Pavilion</div></div>
+              </div>
+              <button class="invite-rsvp" onclick="showGuest('g-form')" data-i="cardCta">Click to RSVP</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RSVP FORM -->
+  <div class="wrap hidden" id="g-form">
+    <div class="form-shell panel">
+      <div class="form-head">
+        <p class="eyebrow" data-i="formEyebrow">Reservation</p>
+        <h2 data-i="formH2">Confirm your attendance</h2>
+      </div>
+      <div class="form-grid">
+        <div class="field">
+          <label data-i="lblName">Full name <span class="req">*</span></label>
+          <input id="f-name" type="text" placeholder="—">
+        </div>
+        <div class="field">
+          <label data-i="lblPhone">Mobile <span class="req">*</span></label>
+          <input id="f-phone" type="text" placeholder="+966 5x xxx xxxx">
+        </div>
+        <div class="field">
+          <label data-i="lblEmail">Email</label>
+          <input id="f-email" type="text" placeholder="—">
+        </div>
+        <div class="field">
+          <label data-i="lblNat">Nationality</label>
+          <select id="f-nat">
+            <option value="">—</option>
+            <option>Saudi Arabia</option><option>Egypt</option><option>UAE</option>
+            <option>Kuwait</option><option>Qatar</option><option>Lebanon</option>
+            <option>Jordan</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label data-i="lblGuests">Number of guests</label>
+          <div class="guests-step">
+            <button onclick="stepGuests(-1)">−</button>
+            <span id="f-guests">2</span>
+            <button onclick="stepGuests(1)">+</button>
+          </div>
+        </div>
+        <div class="field">
+          <label data-i="lblSlot">Preferred date &amp; time</label>
+          <select id="f-slot">
+            <option>Sat 23 May · 6:00 PM</option>
+            <option>Sat 23 May · 8:30 PM</option>
+            <option>Sun 24 May · 6:00 PM</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label data-i="lblTransfer">Transfer request</label>
+          <div class="toggle-row" id="f-transfer">
+            <div class="chip-opt on" data-v="none" onclick="pickTransfer(this)" data-i="trNone">Not required</div>
+            <div class="chip-opt" data-v="shuttle" onclick="pickTransfer(this)" data-i="trShuttle">Group shuttle</div>
+            <div class="chip-opt" data-v="vip" onclick="pickTransfer(this)" data-i="trVip">Private VIP car</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-foot">
+        <span class="err" id="f-err"></span>
+        <div style="display:flex;gap:12px;margin-left:auto">
+          <button class="btn ghost" onclick="showGuest('g-invite')" data-i="back">Back</button>
+          <button class="btn gold" onclick="submitRsvp()" data-i="submit">Submit RSVP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION + QR PASS -->
+  <div class="wrap hidden" id="g-confirm">
+    <div class="confirm-stage">
+      <!-- badge -->
+      <div class="badge">
+        <div class="badge-top">
+          <div class="bt-name">BANAN</div>
+          <div class="bt-sub" data-i="badgeSub">Inauguration · Access Pass</div>
+        </div>
+        <div class="badge-pre" data-i="badgePre">This pass admits</div>
+        <div class="badge-name" id="b-name">Guest</div>
+        <div class="badge-role" id="b-role">2 Guests · Transfer: None</div>
+        <div class="qr-frame"><div id="qrcode"></div></div>
+        <div class="badge-id" id="b-id">BNN-0000</div>
+        <div class="badge-meta">
+          <div><div class="bk" data-i="fDate">Date</div><div class="bv" id="b-date">23 May</div></div>
+          <div><div class="bk" data-i="fTime">Time</div><div class="bv" id="b-time">6:00 PM</div></div>
+          <div><div class="bk" data-i="fLoc">Venue</div><div class="bv" data-i="cardVenue">Pavilion</div></div>
+        </div>
+      </div>
+      <!-- copy -->
+      <div class="confirm-copy">
+        <div class="tick">✓</div>
+        <p class="eyebrow" data-i="confEyebrow">Reservation confirmed</p>
+        <h2 data-i="confH2">We look forward to hosting you</h2>
+        <p class="invite-lead" data-i="confLead">Your personal access pass is ready. Present the QR code at the Banan Pavilion entrance — no printed ticket needed.</p>
+        <ul class="next-list">
+          <li><span class="n">1</span><span data-i="nl1">Your QR pass is sent to your mobile and email instantly.</span></li>
+          <li><span class="n">2</span><span data-i="nl2">A reminder arrives 24 hours before via WhatsApp.</span></li>
+          <li><span class="n">3</span><span data-i="nl3">Scan on arrival for contactless accreditation.</span></li>
+        </ul>
+        <div class="deliver">
+          <span class="d">✓ <span data-i="dWa">WhatsApp</span></span>
+          <span class="d">✓ <span data-i="dSms">SMS</span></span>
+          <span class="d">✓ <span data-i="dEmail">Email</span></span>
+          <span class="d">✓ <span data-i="dApp">TMGsa App</span></span>
+        </div>
+        <div class="cta-row">
+          <button class="btn ghost" onclick="resetGuest()" data-i="confAgain">Register another guest</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     ORGANIZER CONSOLE
+========================================================= -->
+<div id="org" class="hidden">
+
+  <!-- DASHBOARD -->
+  <div class="wrap" id="t-dash">
+    <p class="eyebrow" data-i="orgEyebrow">Banan Inauguration · Control room</p>
+    <h1 class="page-title" data-i="dashTitle">Event command dashboard</h1>
+    <div class="stat-row">
+      <div class="stat"><div class="sk" data-i="stRsvp">Total RSVPs</div><div class="sv" id="st-rsvp">0</div><div class="sd" data-i="stRsvpD">confirmed reservations</div></div>
+      <div class="stat"><div class="sk" data-i="stGuests">Expected guests</div><div class="sv" id="st-guests">0</div><div class="sd" data-i="stGuestsD">heads on the night</div></div>
+      <div class="stat"><div class="sk" data-i="stTransfer">Transfer requests</div><div class="sv" id="st-transfer">0</div><div class="sd" data-i="stTransferD">shuttle + VIP</div></div>
+      <div class="stat"><div class="sk" data-i="stCheck">Checked in</div><div class="sv" id="st-check">0</div><div class="sd" data-i="stCheckD">live on-site</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-h"><h3 data-i="chTrend">RSVPs over time</h3></div>
+        <div class="card-b"><div class="spark" id="spark"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3 data-i="chNat">Guests by nationality</h3></div>
+        <div class="card-b" id="natBars"></div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-h"><h3 data-i="chSlot">Attendance by slot</h3></div>
+        <div class="card-b" id="slotBars"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3 data-i="chTransfer">Transfer split</h3></div>
+        <div class="card-b" id="transferBars"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUEST LIST -->
+  <div class="wrap hidden" id="t-guests">
+    <p class="eyebrow" data-i="orgEyebrow">Banan Inauguration · Control room</p>
+    <h1 class="page-title" data-i="guestsTitle">Guest list &amp; segments</h1>
+    <div class="toolbar">
+      <input type="text" id="search" placeholder="Search name, phone, nationality…" oninput="renderTable()">
+      <select id="filterSlot" onchange="renderTable()"><option value="" data-i="allSlots">All slots</option><option>Sat 23 May · 6:00 PM</option><option>Sat 23 May · 8:30 PM</option><option>Sun 24 May · 6:00 PM</option></select>
+      <select id="filterTransfer" onchange="renderTable()"><option value="" data-i="allTransfer">All transfer</option><option value="shuttle">Group shuttle</option><option value="vip">Private VIP car</option><option value="none" data-i="noTransfer">No transfer</option></select>
+      <select id="filterStatus" onchange="renderTable()"><option value="" data-i="allStatus">All status</option><option value="in" data-i="fIn">Checked in</option><option value="pend" data-i="fPend">Awaiting</option></select>
+      <button class="mini" style="margin-left:auto" onclick="exportCsv()" data-i="exportBtn">Export CSV</button>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th data-i="thName">Guest</th><th data-i="thContact">Contact</th><th data-i="thNat">Nationality</th>
+          <th data-i="thParty">Party</th><th data-i="thSlot">Slot</th><th data-i="thTransfer">Transfer</th>
+          <th data-i="thStatus">Status</th><th></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="muted" id="tcount" style="font-size:12px;margin-top:12px"></p>
+  </div>
+
+  <!-- BROADCASTS -->
+  <div class="wrap hidden" id="t-broadcast">
+    <p class="eyebrow" data-i="orgEyebrow">Banan Inauguration · Control room</p>
+    <h1 class="page-title" data-i="bcTitle">Multi-channel broadcasts</h1>
+    <div class="bc-grid">
+      <div>
+        <p class="eyebrow" data-i="bcSeg">Audience segment</p>
+        <div id="segList"></div>
+      </div>
+      <div class="card compose">
+        <div class="card-h"><h3 data-i="bcCompose">Compose message</h3><span class="muted" id="bcReach" style="font-size:12px"></span></div>
+        <div class="card-b">
+          <p class="eyebrow" data-i="bcChannels">Channels</p>
+          <div class="channels" id="channels">
+            <div class="chip-opt on" onclick="toggleChip(this)" data-i="dWa">WhatsApp</div>
+            <div class="chip-opt" onclick="toggleChip(this)" data-i="dSms">SMS</div>
+            <div class="chip-opt" onclick="toggleChip(this)" data-i="dEmail">Email</div>
+            <div class="chip-opt" onclick="toggleChip(this)" data-i="dApp">TMGsa App push</div>
+          </div>
+          <textarea id="bcMsg" data-i-ph="bcPh" placeholder="Dear guest, we look forward to welcoming you to the Banan inauguration…"></textarea>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px">
+            <span class="send-note" id="bcNote"></span>
+            <button class="btn gold" onclick="sendBroadcast()" data-i="bcSend">Send broadcast</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECK-IN -->
+  <div class="wrap hidden" id="t-checkin">
+    <p class="eyebrow" data-i="orgEyebrow">Banan Inauguration · Control room</p>
+    <h1 class="page-title" data-i="ciTitle">On-site accreditation</h1>
+    <div class="checkin-stage">
+      <div>
+        <div class="scanner">
+          <div class="scan-box"><div class="scan-line"></div></div>
+          <div class="scan-hint" data-i="ciHint">QR scanner · live</div>
+        </div>
+        <button class="btn gold" style="width:100%;margin-top:14px" onclick="simulateScan()" data-i="ciScan">Simulate next scan</button>
+      </div>
+      <div>
+        <p class="eyebrow" data-i="ciResultLbl">Last scan</p>
+        <div class="checkin-result" id="ciResult">
+          <p class="muted" data-i="ciIdle">Awaiting first scan of the evening…</p>
+        </div>
+        <div class="recent-checkins">
+          <p class="eyebrow" data-i="ciRecent">Recent arrivals</p>
+          <div id="ciList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="foot-demo">
+  <span data-i="footL">Banan Inauguration · Pre-event digital system — interactive demo</span>
+  <span data-i="footR">Ranna Studios × intouch · mock data, not yet connected to a database</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- state ---------------- */
+const NAMES=["Abdullah Al-Rashid","Fatima El-Sayed","Mohammed Al-Otaibi","Layla Haddad","Khalid Al-Qahtani","Nour Mansour","Sara Al-Dosari","Tariq Bin Salem","Hessa Al-Faisal","Omar Khoury","Reem Al-Subaie","Yousef Nader","Aisha Al-Harbi","Ziad Tabbara","Maha Al-Ghamdi","Rana Mikati"];
+const NATS=["Saudi Arabia","Egypt","UAE","Lebanon","Kuwait","Qatar","Jordan"];
+const SLOTS=["Sat 23 May · 6:00 PM","Sat 23 May · 8:30 PM","Sun 24 May · 6:00 PM"];
+const TRANSFERS=["none","shuttle","vip"];
+let SEQ=1;
+let guests=[];
+
+function rid(){return "BNN-"+String(SEQ++).padStart(4,"0");}
+function seed(){
+  guests=[];SEQ=1;
+  for(let i=0;i<13;i++){
+    const party=1+Math.floor(Math.random()*4);
+    const tr=TRANSFERS[Math.floor(Math.random()*3)];
+    guests.push({
+      id:rid(),name:NAMES[i],
+      phone:"+966 5"+(10+Math.floor(Math.random()*89))+" "+(100+Math.floor(Math.random()*899))+" "+(1000+Math.floor(Math.random()*8999)),
+      nat:NATS[Math.floor(Math.random()*NATS.length)],
+      party,slot:SLOTS[Math.floor(Math.random()*SLOTS.length)],transfer:tr,
+      status:Math.random()<0.32?"in":"pend",
+      day:1+Math.floor(Math.random()*6)
+    });
+  }
+}
+seed();
+
+/* ---------------- i18n ---------------- */
+const I={
+  brandsub:["Residential Villas · Riyadh","فلل سكنية · الرياض"],
+  mGuest:["Guest","الضيف"],mOrg:["Organizer","المنظّم"],
+  tDash:["Dashboard","لوحة التحكم"],tGuests:["Guest List","قائمة الضيوف"],tBroadcast:["Broadcasts","الإشعارات"],tCheckin:["On-site Check-in","تسجيل الحضور"],
+  invEyebrow:["You are cordially invited","يسعدنا دعوتكم"],
+  invH1:["Inauguration of Banan Residential Villas","افتتاح فلل بنان السكنية"],
+  invLead:["An evening to unveil Riyadh's newest landmark in elevated living. Join the Talaat Moustafa Group family for the official opening of Banan.","أمسية للكشف عن أحدث معالم الرياض في الحياة الراقية. انضموا إلى عائلة مجموعة طلعت مصطفى في الافتتاح الرسمي لبنان."],
+  fDate:["Date","التاريخ"],fTime:["Time","الوقت"],fLoc:["Location","الموقع"],fLocV:["Banan Pavilion","جناح بنان"],
+  ctaRsvp:["RSVP now","أكّد حضورك"],ctaVideo:["Watch the film","شاهد الفيلم"],
+  cardPre:["You are cordially invited to the inauguration of","يسعدنا دعوتكم لحضور افتتاح"],
+  cardLoc:["Al Riyadh","الرياض"],cardVenue:["Pavilion","الجناح"],cardCta:["Click to RSVP","اضغط للتأكيد"],
+  formEyebrow:["Reservation","الحجز"],formH2:["Confirm your attendance","أكّد حضورك"],
+  lblName:["Full name *","الاسم الكامل *"],lblPhone:["Mobile *","الجوال *"],lblEmail:["Email","البريد الإلكتروني"],
+  lblNat:["Nationality","الجنسية"],lblGuests:["Number of guests","عدد الضيوف"],lblSlot:["Preferred date & time","التاريخ والوقت المفضّل"],
+  lblTransfer:["Transfer request","طلب التنقّل"],trNone:["Not required","غير مطلوب"],trShuttle:["Group shuttle","حافلة جماعية"],trVip:["Private VIP car","سيارة خاصة"],
+  back:["Back","رجوع"],submit:["Submit RSVP","إرسال الحجز"],
+  badgeSub:["Inauguration · Access Pass","الافتتاح · بطاقة دخول"],badgePre:["This pass admits","تصرّح هذه البطاقة بدخول"],
+  confEyebrow:["Reservation confirmed","تم تأكيد الحجز"],confH2:["We look forward to hosting you","نتطلّع لاستضافتكم"],
+  confLead:["Your personal access pass is ready. Present the QR code at the Banan Pavilion entrance — no printed ticket needed.","بطاقة الدخول الخاصة بكم جاهزة. اعرضوا رمز الـ QR عند مدخل جناح بنان — دون الحاجة لتذكرة مطبوعة."],
+  nl1:["Your QR pass is sent to your mobile and email instantly.","تُرسل بطاقتكم فوراً إلى الجوال والبريد."],
+  nl2:["A reminder arrives 24 hours before via WhatsApp.","يصلكم تذكير قبل ٢٤ ساعة عبر واتساب."],
+  nl3:["Scan on arrival for contactless accreditation.","امسحوا الرمز عند الوصول لتسجيل سريع دون تلامس."],
+  dWa:["WhatsApp","واتساب"],dSms:["SMS","رسالة نصية"],dEmail:["Email","بريد"],dApp:["TMGsa App","تطبيق TMGsa"],
+  confAgain:["Register another guest","تسجيل ضيف آخر"],
+  orgEyebrow:["Banan Inauguration · Control room","افتتاح بنان · غرفة التحكم"],
+  dashTitle:["Event command dashboard","لوحة قيادة الفعالية"],
+  stRsvp:["Total RSVPs","إجمالي الحجوزات"],stRsvpD:["confirmed reservations","حجوزات مؤكّدة"],
+  stGuests:["Expected guests","الضيوف المتوقّعون"],stGuestsD:["heads on the night","الحضور ليلة الفعالية"],
+  stTransfer:["Transfer requests","طلبات التنقّل"],stTransferD:["shuttle + VIP","حافلة + خاصة"],
+  stCheck:["Checked in","تم تسجيلهم"],stCheckD:["live on-site","مباشر في الموقع"],
+  chTrend:["RSVPs over time","الحجوزات عبر الوقت"],chNat:["Guests by nationality","الضيوف حسب الجنسية"],
+  chSlot:["Attendance by slot","الحضور حسب الموعد"],chTransfer:["Transfer split","توزيع التنقّل"],
+  guestsTitle:["Guest list & segments","قائمة الضيوف والشرائح"],
+  allSlots:["All slots","كل المواعيد"],allTransfer:["All transfer","كل التنقّل"],noTransfer:["No transfer","بدون تنقّل"],
+  allStatus:["All status","كل الحالات"],fIn:["Checked in","تم الحضور"],fPend:["Awaiting","بانتظار"],
+  exportBtn:["Export CSV","تصدير CSV"],
+  thName:["Guest","الضيف"],thContact:["Contact","التواصل"],thNat:["Nationality","الجنسية"],thParty:["Party","العدد"],
+  thSlot:["Slot","الموعد"],thTransfer:["Transfer","التنقّل"],thStatus:["Status","الحالة"],
+  bcTitle:["Multi-channel broadcasts","إشعارات متعددة القنوات"],bcSeg:["Audience segment","شريحة الجمهور"],
+  bcCompose:["Compose message","صياغة الرسالة"],bcChannels:["Channels","القنوات"],
+  bcSend:["Send broadcast","إرسال الإشعار"],bcPh:["Dear guest, we look forward to welcoming you to the Banan inauguration…","عزيزي الضيف، نتطلّع لاستقبالكم في افتتاح بنان…"],
+  ciTitle:["On-site accreditation","تسجيل الحضور في الموقع"],ciHint:["QR scanner · live","ماسح QR · مباشر"],
+  ciScan:["Simulate next scan","محاكاة المسح التالي"],ciResultLbl:["Last scan","آخر مسح"],
+  ciIdle:["Awaiting first scan of the evening…","بانتظار أول مسح للأمسية…"],ciRecent:["Recent arrivals","الوافدون مؤخراً"],
+  footL:["Banan Inauguration · Pre-event digital system — interactive demo","افتتاح بنان · النظام الرقمي قبل الفعالية — عرض تفاعلي"],
+  footR:["Ranna Studios × intouch · mock data, not yet connected to a database","رنّا ستوديوز × intouch · بيانات تجريبية، غير مرتبطة بقاعدة بيانات بعد"]
+};
+let lang=0;
+function applyLang(){
+  document.body.setAttribute("dir",lang?"rtl":"ltr");
+  document.documentElement.lang=lang?"ar":"en";
+  document.querySelectorAll("[data-i]").forEach(el=>{const k=el.getAttribute("data-i");if(I[k])el.textContent=I[k][lang];});
+  document.querySelectorAll("[data-i-ph]").forEach(el=>{const k=el.getAttribute("data-i-ph");if(I[k])el.setAttribute("placeholder",I[k][lang]);});
+  document.getElementById("langBtn").textContent=lang?"English":"العربية";
+  renderAll();
+}
+function toggleLang(){lang=lang?0:1;applyLang();}
+
+/* ---------------- mode / nav ---------------- */
+let mode="guest";
+function setMode(m){
+  mode=m;
+  document.getElementById("mode-guest").classList.toggle("on",m==="guest");
+  document.getElementById("mode-org").classList.toggle("on",m==="org");
+  document.getElementById("guest").classList.toggle("hidden",m!=="guest");
+  document.getElementById("org").classList.toggle("hidden",m!=="org");
+  document.getElementById("subnav").classList.toggle("hidden",m!=="org");
+  if(m==="org")renderAll();
+  window.scrollTo(0,0);
+}
+function showGuest(id){
+  ["g-invite","g-form","g-confirm"].forEach(x=>document.getElementById(x).classList.toggle("hidden",x!==id));
+  window.scrollTo(0,0);
+}
+let tab="dash";
+function setTab(t){
+  tab=t;
+  document.querySelectorAll(".subnav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
+  ["dash","guests","broadcast","checkin"].forEach(x=>document.getElementById("t-"+x).classList.toggle("hidden",x!==t));
+  renderAll();window.scrollTo(0,0);
+}
+
+/* ---------------- guest form ---------------- */
+let gCount=2,transfer="none";
+function stepGuests(d){gCount=Math.max(1,Math.min(12,gCount+d));document.getElementById("f-guests").textContent=gCount;}
+function pickTransfer(el){document.querySelectorAll("#f-transfer .chip-opt").forEach(c=>c.classList.remove("on"));el.classList.add("on");transfer=el.dataset.v;}
+function submitRsvp(){
+  const name=document.getElementById("f-name").value.trim();
+  const phone=document.getElementById("f-phone").value.trim();
+  const err=document.getElementById("f-err");
+  if(!name||!phone){err.textContent=lang?"يرجى إدخال الاسم ورقم الجوال.":"Please enter your name and mobile number.";return;}
+  err.textContent="";
+  const g={
+    id:rid(),name,phone,
+    email:document.getElementById("f-email").value.trim(),
+    nat:document.getElementById("f-nat").value||"—",
+    party:gCount,slot:document.getElementById("f-slot").value,transfer,
+    status:"pend",day:6
+  };
+  guests.push(g);
+  // build pass
+  document.getElementById("b-name").textContent=g.name;
+  const trLabel={none:I.trNone[lang],shuttle:I.trShuttle[lang],vip:I.trVip[lang]}[g.transfer];
+  document.getElementById("b-role").textContent=g.party+" "+(lang?"ضيوف":"Guests")+" · "+(lang?"تنقّل":"Transfer")+": "+trLabel;
+  document.getElementById("b-id").textContent=g.id;
+  document.getElementById("b-date").textContent=g.slot.split("·")[0].trim();
+  document.getElementById("b-time").textContent=g.slot.split("·")[1].trim();
+  const box=document.getElementById("qrcode");box.innerHTML="";
+  try{new QRCode(box,{text:"BANAN|"+g.id+"|"+g.name+"|"+g.party,width:148,height:148,colorDark:"#2E3617",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});}
+  catch(e){box.innerHTML="<div style='font:600 12px serif;color:#2E3617'>"+g.id+"</div>";}
+  showGuest("g-confirm");
+}
+function resetGuest(){
+  document.getElementById("f-name").value="";document.getElementById("f-phone").value="";
+  document.getElementById("f-email").value="";document.getElementById("f-nat").value="";
+  gCount=2;document.getElementById("f-guests").textContent="2";
+  pickTransfer(document.querySelector('#f-transfer .chip-opt[data-v="none"]'));
+  showGuest("g-form");
+}
+
+/* ---------------- organizer renders ---------------- */
+function renderAll(){
+  if(mode!=="org")return;
+  renderStats();renderCharts();renderTable();renderSegments();renderCheckin();
+}
+function renderStats(){
+  const rsvp=guests.length;
+  const heads=guests.reduce((a,g)=>a+g.party,0);
+  const tr=guests.filter(g=>g.transfer!=="none").length;
+  const ci=guests.filter(g=>g.status==="in").length;
+  set("st-rsvp",rsvp);set("st-guests",heads);set("st-transfer",tr);set("st-check",ci);
+}
+function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function renderCharts(){
+  // trend by day
+  const days=[1,2,3,4,5,6];const counts=days.map(d=>guests.filter(g=>g.day<=d).length);
+  const max=Math.max(...counts,1);
+  const labels=lang?["-٥ي","-٤ي","-٣ي","-٢ي","أمس","اليوم"]:["-5d","-4d","-3d","-2d","yest","today"];
+  document.getElementById("spark").innerHTML=counts.map((c,i)=>`<div class="sb" style="height:${Math.max(8,c/max*100)}%"><span>${labels[i]}</span></div>`).join("");
+  // nationality
+  bars("natBars",groupCount("nat"));
+  // slots
+  bars("slotBars",SLOTS.map(s=>[s.replace(" · ","\n"),guests.filter(g=>g.slot===s).reduce((a,g)=>a+g.party,0)]));
+  // transfer
+  const trLabels=lang?{none:"بدون",shuttle:"حافلة",vip:"خاصة"}:{none:"None",shuttle:"Shuttle",vip:"VIP"};
+  bars("transferBars",TRANSFERS.map(t=>[trLabels[t],guests.filter(g=>g.transfer===t).length]));
+}
+function groupCount(key){
+  const m={};guests.forEach(g=>{m[g[key]]=(m[g[key]]||0)+1;});
+  return Object.entries(m).sort((a,b)=>b[1]-a[1]);
+}
+function bars(id,data){
+  const max=Math.max(...data.map(d=>d[1]),1);
+  document.getElementById(id).innerHTML=data.map(([l,n])=>
+    `<div class="bar-row"><div class="bl">${l}</div><div class="bar-track"><div class="bar-fill" style="width:${n/max*100}%"></div></div><div class="bn">${n}</div></div>`
+  ).join("");
+}
+function renderTable(){
+  const q=(document.getElementById("search").value||"").toLowerCase();
+  const fs=document.getElementById("filterSlot").value;
+  const ft=document.getElementById("filterTransfer").value;
+  const fst=document.getElementById("filterStatus").value;
+  const rows=guests.filter(g=>{
+    if(q&&!(g.name.toLowerCase().includes(q)||g.phone.toLowerCase().includes(q)||g.nat.toLowerCase().includes(q)))return false;
+    if(fs&&g.slot!==fs)return false;
+    if(ft&&g.transfer!==ft)return false;
+    if(fst&&g.status!==fst)return false;
+    return true;
+  });
+  const trLabel={none:I.trNone[lang],shuttle:I.trShuttle[lang],vip:I.trVip[lang]};
+  document.getElementById("tbody").innerHTML=rows.map(g=>{
+    const stPill=g.status==="in"?`<span class="pill in">${I.fIn[lang]}</span>`:`<span class="pill pend">${I.fPend[lang]}</span>`;
+    const trPill=g.transfer==="none"?`<span class="muted" style="font-size:12px">—</span>`:`<span class="pill transfer">${trLabel[g.transfer]}</span>`;
+    const act=g.status==="in"?"":`<button class="mini" onclick="checkInRow('${g.id}')">${lang?"تسجيل":"Check in"}</button>`;
+    return `<tr>
+      <td><div class="gname">${g.name}</div><div class="muted" style="font-size:11px">${g.id}</div></td>
+      <td>${g.phone}</td><td>${g.nat}</td><td>${g.party}</td>
+      <td style="font-size:12px">${g.slot}</td><td>${trPill}</td><td>${stPill}</td><td>${act}</td>
+    </tr>`;
+  }).join("");
+  document.getElementById("tcount").textContent=(lang?"عرض ":"Showing ")+rows.length+(lang?" من ":" of ")+guests.length+(lang?" ضيفاً":" guests");
+}
+function checkInRow(id){const g=guests.find(x=>x.id===id);if(g){g.status="in";toast((lang?"تم تسجيل ":"Checked in ")+g.name);renderAll();}}
+
+/* ---------------- broadcasts ---------------- */
+let segSel="all";
+function segments(){
+  return [
+    ["all",lang?"كل الضيوف":"All guests",guests.length],
+    ["transfer",lang?"يطلبون تنقّلاً":"Need transfer",guests.filter(g=>g.transfer!=="none").length],
+    ["vip",lang?"كبار الشخصيات (VIP)":"VIP guests",guests.filter(g=>g.transfer==="vip").length],
+    ["pend",lang?"لم يسجّلوا الحضور":"Not yet checked in",guests.filter(g=>g.status==="pend").length],
+    ["sat6",lang?"السبت ٦ مساءً":"Sat · 6:00 PM",guests.filter(g=>g.slot===SLOTS[0]).length]
+  ];
+}
+function renderSegments(){
+  document.getElementById("segList").innerHTML=segments().map(([k,n,c])=>
+    `<div class="seg-item ${k===segSel?'on':''}" onclick="pickSeg('${k}')"><span class="sn">${n}</span><span class="sc">${c}</span></div>`
+  ).join("");
+  const cur=segments().find(s=>s[0]===segSel);
+  document.getElementById("bcReach").textContent=(lang?"الوصول إلى ":"Reaching ")+(cur?cur[2]:0)+(lang?" ضيف":" guests");
+  document.getElementById("bcNote").textContent="";
+}
+function pickSeg(k){segSel=k;renderSegments();}
+function toggleChip(el){el.classList.toggle("on");}
+function sendBroadcast(){
+  const cur=segments().find(s=>s[0]===segSel);
+  const chans=[...document.querySelectorAll("#channels .chip-opt.on")].map(c=>c.textContent);
+  if(!chans.length){document.getElementById("bcNote").textContent=lang?"اختر قناة واحدة على الأقل.":"Select at least one channel.";return;}
+  toast((lang?"تم الإرسال إلى ":"Sent to ")+(cur?cur[2]:0)+(lang?" ضيف عبر ":" guests via ")+chans.join(", "));
+  document.getElementById("bcNote").textContent=lang?"تمت الجدولة (عرض تجريبي).":"Queued for delivery (demo).";
+}
+
+/* ---------------- check-in ---------------- */
+let recent=[];
+function simulateScan(){
+  const pend=guests.filter(g=>g.status==="pend");
+  if(!pend.length){toast(lang?"الجميع مسجّل":"Everyone is checked in");return;}
+  const g=pend[Math.floor(Math.random()*pend.length)];
+  g.status="in";recent.unshift({name:g.name,party:g.party,t:new Date()});
+  recent=recent.slice(0,6);
+  const init=g.name.split(" ").map(w=>w[0]).slice(0,2).join("");
+  document.getElementById("ciResult").innerHTML=
+    `<div class="result-card"><div class="ravatar">${init}</div>
+      <div><div class="rn">${g.name}</div>
+      <div class="muted" style="font-size:12px;margin-top:4px">${g.id} · ${g.party} ${lang?"ضيوف":"guests"} · ${g.slot}</div>
+      <span class="pill in" style="margin-top:8px;display:inline-block">${lang?"تم القبول":"Admitted"}</span></div></div>`;
+  renderCheckin();renderStats();
+}
+function renderCheckin(){
+  document.getElementById("ciList").innerHTML=recent.map(r=>
+    `<div class="ci-row"><span>${r.name} <span class="muted">· ${r.party} ${lang?"ضيوف":"guests"}</span></span><span class="muted">${r.t.toLocaleTimeString(lang?'ar':'en',{hour:'2-digit',minute:'2-digit'})}</span></div>`
+  ).join("")||`<p class="muted" style="font-size:13px">${lang?"لا حضور بعد.":"No arrivals yet."}</p>`;
+}
+
+/* ---------------- export + toast ---------------- */
+function exportCsv(){
+  const head=["ID","Name","Phone","Nationality","Party","Slot","Transfer","Status"];
+  const rows=guests.map(g=>[g.id,g.name,g.phone,g.nat,g.party,g.slot,g.transfer,g.status]);
+  const csv=[head,...rows].map(r=>r.map(c=>`"${c}"`).join(",")).join("\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download="banan-guests.csv";a.click();
+  toast(lang?"تم تصدير القائمة":"Guest list exported");
+}
+let tt;
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2400);}
+
+/* init */
+applyLang();
+</script>
+</body>
+</html>
