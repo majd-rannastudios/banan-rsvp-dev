@@ -1,5 +1,5 @@
 import { requireRole } from "@/lib/organizer/session";
-import { MOCK_GUESTS } from "@/lib/organizer/mock-guests";
+import { listGuests } from "@/lib/organizer/guests-data";
 import { computeStats, trendData, nationalityData, slotData, transferData } from "@/lib/organizer/analytics";
 import { StatTile } from "@/components/organizer/stat-tile";
 import { ChartCard } from "@/components/organizer/chart-card";
@@ -10,11 +10,12 @@ import { DashboardHeading } from "./dashboard-heading";
 export default async function DashboardPage() {
   await requireRole(["admin", "broadcast_manager", "viewer"]);
 
-  const stats = computeStats(MOCK_GUESTS);
-  const trend = trendData(MOCK_GUESTS);
-  const nationality = nationalityData(MOCK_GUESTS);
-  const slots = slotData(MOCK_GUESTS);
-  const transfer = transferData(MOCK_GUESTS, { none: "None", shuttle: "Shuttle", vip: "VIP" });
+  const guests = await listGuests();
+  const stats = computeStats(guests);
+  const trend = trendData(guests);
+  const nationality = nationalityData(guests);
+  const slots = slotData(guests);
+  const transfer = transferData(guests, { none: "None", shuttle: "Shuttle", vip: "VIP" });
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-8">

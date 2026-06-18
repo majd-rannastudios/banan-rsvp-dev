@@ -1,4 +1,4 @@
-import type { MockGuest } from "./mock-guests";
+import type { Guest } from "./guests-data";
 
 export interface DashboardStats {
   totalRsvps: number;
@@ -7,7 +7,7 @@ export interface DashboardStats {
   checkedIn: number;
 }
 
-export function computeStats(guests: MockGuest[]): DashboardStats {
+export function computeStats(guests: Guest[]): DashboardStats {
   const responded = guests.filter((g) => g.rsvpStatus === "confirmed" || g.rsvpStatus === "checked_in");
   return {
     totalRsvps: responded.length,
@@ -22,13 +22,18 @@ export interface TrendPoint {
   count: number;
 }
 
+function daysAgo(createdAt: string): number {
+  const diffMs = Date.now() - new Date(createdAt).getTime();
+  return Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+}
+
 /** Cumulative RSVP count over the last 6 days, oldest first. */
-export function trendData(guests: MockGuest[]): TrendPoint[] {
+export function trendData(guests: Guest[]): TrendPoint[] {
   const responded = guests.filter((g) => g.rsvpStatus === "confirmed" || g.rsvpStatus === "checked_in");
   const days = [5, 4, 3, 2, 1, 0];
-  return days.map((daysAgo) => ({
-    label: daysAgo === 0 ? "Today" : `-${daysAgo}d`,
-    count: responded.filter((g) => g.daysAgo >= daysAgo).length,
+  return days.map((d) => ({
+    label: d === 0 ? "Today" : `-${d}d`,
+    count: responded.filter((g) => daysAgo(g.createdAt) >= d).length,
   }));
 }
 
@@ -37,21 +42,27 @@ export interface BarDatum {
   value: number;
 }
 
-export function nationalityData(guests: MockGuest[]): BarDatum[] {
+export function nationalityData(guests: Guest[]): BarDatum[] {
   const counts = new Map<string, number>();
-  guests.forEach((g) => counts.set(g.nationality, (counts.get(g.nationality) ?? 0) + 1));
+  guests.forEach((g) => {
+    const key = g.nationality ?? "Unknown";
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  });
   return [...counts.entries()].map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
 }
 
-export function slotData(guests: MockGuest[]): BarDatum[] {
+export function slotData(guests: Guest[]): BarDatum[] {
   const counts = new Map<string, number>();
   guests
     .filter((g) => g.rsvpStatus === "confirmed" || g.rsvpStatus === "checked_in")
-    .forEach((g) => counts.set(g.slotLabel, (counts.get(g.slotLabel) ?? 0) + g.partySize));
+    .forEach((g) => {
+      const key = g.slotLabel ?? "No slot chosen";
+      counts.set(key, (counts.get(key) ?? 0) + g.partySize);
+    });
   return [...counts.entries()].map(([label, value]) => ({ label, value }));
 }
 
-export function transferData(guests: MockGuest[], labels: Record<"none" | "shuttle" | "vip", string>): BarDatum[] {
+export function transferData(guests: Guest[], labels: Record<"none" | "shuttle" | "vip", string>): BarDatum[] {
   const order: Array<"none" | "shuttle" | "vip"> = ["none", "shuttle", "vip"];
   return order.map((choice) => ({
     label: labels[choice],
