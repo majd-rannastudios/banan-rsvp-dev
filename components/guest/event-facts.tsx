@@ -24,7 +24,7 @@ export function EventFacts({
   const { locale, t } = useLocale();
 
   return (
-    <dl className="grid grid-cols-1 gap-6 border-t border-surface-muted pt-6 sm:grid-cols-3">
+    <dl className="grid grid-cols-1 gap-6 border-t border-surface-muted pt-6 text-center sm:grid-cols-3">
       <div>
         <dt className="text-[10px] tracking-[0.26em] text-accent uppercase">
           {t("factDate")}

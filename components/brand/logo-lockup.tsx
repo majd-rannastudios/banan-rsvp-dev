@@ -24,7 +24,9 @@ export function LogoLockup({
   const src = tone === "light" ? "/brand/logo-secondary.svg" : "/brand/logo-primary.svg";
 
   return (
-    <div className="flex items-center gap-3">
+    // inline-flex (not flex) so this respects an ancestor's text-align:center
+    // instead of stretching block-full-width and left-aligning its content.
+    <div className="inline-flex items-center gap-3">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt="Banan Al Riyadh" className={`${heightClass} w-auto`} />
       {showSecondarySlot ? (
