@@ -1,15 +1,14 @@
-"use client";
-
-import { useLocale } from "@/lib/i18n/context";
-
 /**
- * Placeholder wordmark. No vector logo file exists yet — when one is
- * provided, swap the contents of this component only; every caller
- * (header, badge, login screen) stays unchanged.
+ * Real lockups extracted from the Banan Corporate Master Brand Guidelines
+ * 2024 PDF (vector paths, not rasterized) — see public/brand/logo-*.svg.
+ * "logo-primary" = deep green wordmark for light backgrounds, "logo-secondary"
+ * = white wordmark for dark backgrounds, per the guide's usage rules. The
+ * lockup already includes "Al Riyadh" — per the brand guide ("no slogan
+ * should appear alongside the logo"), do not add tagline text next to it.
  *
  * The secondary-logo slot is rendered but intentionally left empty (no
- * Intouch, no agency credit) — reserved in the layout for a possible future
- * TMG corporate co-branding lockup, per brand co-branding clear-space rules.
+ * Intouch, no agency credit) — reserved for a possible future TMG corporate
+ * co-branding lockup, per the brand's co-branding clear-space rules.
  */
 export function LogoLockup({
   size = "md",
@@ -17,69 +16,27 @@ export function LogoLockup({
   showSecondarySlot = false,
 }: {
   size?: "sm" | "md" | "lg";
-  /** "dark" = for light backgrounds (default body text colors). "light" = for dark/hero backgrounds (white text). */
+  /** "dark" = deep green mark for light backgrounds (default). "light" = white mark for dark/hero backgrounds. */
   tone?: "dark" | "light";
   showSecondarySlot?: boolean;
 }) {
-  const dimensions = {
-    sm: { crest: "h-7 w-7", name: "text-base", sub: "text-[9px]" },
-    md: { crest: "h-9 w-9", name: "text-xl", sub: "text-[10px]" },
-    lg: { crest: "h-12 w-12", name: "text-2xl", sub: "text-xs" },
-  }[size];
+  const heightClass = { sm: "h-8", md: "h-10", lg: "h-16" }[size];
+  const src = tone === "light" ? "/brand/logo-secondary.svg" : "/brand/logo-primary.svg";
 
   return (
-    <div className={`flex items-center gap-3 ${tone === "light" ? "text-white" : "text-text"}`}>
-      <BananCrest className={dimensions.crest} />
-      <div className="min-w-0">
-        <BrandName className={dimensions.name} />
-        <BrandSubtitle className={dimensions.sub} tone={tone} />
-      </div>
+    <div className="flex items-center gap-3">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="Banan Al Riyadh" className={`${heightClass} w-auto`} />
       {showSecondarySlot ? (
         <>
-          <span aria-hidden className="mx-2 h-6 w-px bg-current opacity-20" />
+          <span
+            aria-hidden
+            className={`h-6 w-px ${tone === "light" ? "bg-white/30" : "bg-text/20"}`}
+          />
           {/* reserved secondary co-branding slot — intentionally empty */}
           <span className="sr-only">Secondary logo slot reserved</span>
         </>
       ) : null}
-    </div>
-  );
-}
-
-function BananCrest({ className }: { className?: string }) {
-  return (
-    <div
-      className={`${className} flex flex-none items-center justify-center border border-current font-arabic text-[0.55em] font-semibold tracking-widest`}
-      aria-hidden
-    >
-      B
-    </div>
-  );
-}
-
-function BrandName({ className }: { className?: string }) {
-  const { t } = useLocale();
-  return (
-    <div className={`${className} font-arabic leading-none tracking-[0.28em]`}>
-      {t("brandName")}
-    </div>
-  );
-}
-
-function BrandSubtitle({
-  className,
-  tone,
-}: {
-  className?: string;
-  tone: "dark" | "light";
-}) {
-  const { t } = useLocale();
-  return (
-    <div
-      className={`${className} mt-1 leading-none tracking-[0.22em] uppercase ${
-        tone === "light" ? "text-white/75" : "text-text-muted"
-      }`}
-    >
-      {t("brandSubtitle")}
     </div>
   );
 }
