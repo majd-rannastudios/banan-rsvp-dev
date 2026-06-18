@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import Link from "next/link";
 import { useLocale } from "@/lib/i18n/context";
 import { PartySizeStepper } from "@/components/guest/party-size-stepper";
 import { SlotPicker } from "@/components/guest/slot-picker";
@@ -54,11 +55,17 @@ export function RsvpForm({ invite }: { invite: GuestInvite }) {
 
       {/* Sticky on mobile so the primary action stays reachable on long forms;
           inline on larger screens where the whole form fits in view. */}
-      <div className="fixed inset-x-0 bottom-0 border-t border-surface-muted bg-surface p-4 sm:static sm:mt-10 sm:border-t-0 sm:p-0">
+      <div className="fixed inset-x-0 bottom-0 flex gap-3 border-t border-surface-muted bg-surface p-4 sm:static sm:mt-10 sm:border-t-0 sm:p-0">
+        <Link
+          href={`/i/${invite.token}`}
+          className="flex min-h-12 flex-none items-center justify-center border border-text px-6 text-[12px] tracking-[0.2em] text-text uppercase transition-colors hover:bg-text hover:text-white"
+        >
+          {t("back")}
+        </Link>
         <button
           type="submit"
           disabled={pending}
-          className="min-h-12 w-full bg-interactive px-6 text-[12px] tracking-[0.2em] text-white uppercase transition-colors hover:bg-interactive-hover disabled:opacity-60"
+          className="min-h-12 flex-1 bg-interactive px-6 text-[12px] tracking-[0.2em] text-white uppercase transition-colors hover:bg-interactive-hover disabled:opacity-60"
         >
           {pending ? t("submitting") : t("submitRsvp")}
         </button>

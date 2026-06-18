@@ -10,8 +10,8 @@ export function InviteHero({ invite }: { invite: GuestInvite }) {
   const { locale, t } = useLocale();
   const { event } = invite;
 
-  const alreadyResponded =
-    invite.rsvpStatus === "confirmed" || invite.rsvpStatus === "checked_in";
+  const checkedIn = invite.rsvpStatus === "checked_in";
+  const confirmed = invite.rsvpStatus === "confirmed";
   const declined = invite.rsvpStatus === "declined";
 
   return (
@@ -48,7 +48,35 @@ export function InviteHero({ invite }: { invite: GuestInvite }) {
         </div>
 
         <div className="mx-auto mt-12 max-w-md">
-          {declined ? (
+          {checkedIn ? (
+            <div className="border border-surface-muted bg-surface-muted/40 px-6 py-5 text-center">
+              <p className="text-sm text-text">{t("alreadyCheckedInTitle")}</p>
+              <Link
+                href={`/i/${invite.token}/confirmation`}
+                className="mt-3 inline-block min-h-11 text-[11px] tracking-[0.18em] text-interactive underline uppercase"
+              >
+                {t("viewYourPass")}
+              </Link>
+            </div>
+          ) : confirmed ? (
+            <div className="border border-surface-muted bg-surface-muted/40 px-6 py-5 text-center">
+              <p className="text-sm text-text">{t("alreadyResponded")}</p>
+              <div className="mt-3 flex flex-col items-center gap-2">
+                <Link
+                  href={`/i/${invite.token}/confirmation`}
+                  className="min-h-11 text-[11px] tracking-[0.18em] text-interactive underline uppercase"
+                >
+                  {t("viewYourPass")}
+                </Link>
+                <Link
+                  href={`/i/${invite.token}/rsvp`}
+                  className="min-h-11 text-[11px] tracking-[0.18em] text-text-muted underline uppercase"
+                >
+                  {t("editRsvp")}
+                </Link>
+              </div>
+            </div>
+          ) : declined ? (
             <div className="border border-surface-muted bg-surface-muted/40 px-6 py-5 text-center">
               <p className="text-sm text-text">{t("declinedTitle")}</p>
               <Link
@@ -56,16 +84,6 @@ export function InviteHero({ invite }: { invite: GuestInvite }) {
                 className="mt-3 inline-block text-[11px] tracking-[0.18em] text-interactive underline uppercase"
               >
                 {t("changedYourMind")}
-              </Link>
-            </div>
-          ) : alreadyResponded ? (
-            <div className="border border-surface-muted bg-surface-muted/40 px-6 py-5 text-center">
-              <p className="text-sm text-text">{t("alreadyResponded")}</p>
-              <Link
-                href={`/i/${invite.token}/confirmation`}
-                className="mt-3 inline-block min-h-11 text-[11px] tracking-[0.18em] text-interactive underline uppercase"
-              >
-                {t("viewYourPass")}
               </Link>
             </div>
           ) : (

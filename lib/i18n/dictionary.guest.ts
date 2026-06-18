@@ -17,7 +17,12 @@ export const guestDictionary = {
   acceptInvite: { en: "Accept invitation", ar: "قبول الدعوة" },
   declineInvite: { en: "Decline", ar: "تعذر الحضور" },
   alreadyResponded: { en: "You've already responded", ar: "تم تسجيل ردكم مسبقاً" },
+  alreadyCheckedInTitle: {
+    en: "You're already checked in for this event.",
+    ar: "تم تسجيل حضورك في هذه الفعالية بالفعل.",
+  },
   viewYourPass: { en: "View your pass", ar: "عرض بطاقتك" },
+  editRsvp: { en: "Edit your RSVP", ar: "تعديل التأكيد" },
   inviteNotFoundTitle: { en: "Invitation not found", ar: "لم يتم العثور على الدعوة" },
   inviteNotFoundBody: {
     en: "This link may have expired or been entered incorrectly. Please check the link sent to you, or contact the organizers.",
@@ -27,6 +32,10 @@ export const guestDictionary = {
   // RSVP form
   rsvpEyebrow: { en: "Reservation", ar: "الحجز" },
   rsvpTitle: { en: "Confirm your attendance", ar: "تأكيد حضورك" },
+  editingFinalNotice: {
+    en: "You've already responded to this invitation. Any changes you make and submit below will replace your current response as final.",
+    ar: "لقد قمت بالرد على هذه الدعوة مسبقاً. أي تغييرات تقوم بها وترسلها أدناه ستحل محل ردك الحالي بشكل نهائي.",
+  },
   fieldPartySize: { en: "Number of guests", ar: "عدد الضيوف" },
   fieldSlot: { en: "Preferred date & time", ar: "التاريخ والوقت المفضل" },
   fieldTransfer: { en: "Transfer request", ar: "طلب التوصيل" },
