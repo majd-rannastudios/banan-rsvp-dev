@@ -1,5 +1,6 @@
 import { commonDictionary } from "./dictionary.common";
 import { guestDictionary } from "./dictionary.guest";
+import { organizerDictionary } from "./dictionary.organizer";
 
 /**
  * Flat key -> { en, ar } dictionary. Split into per-domain files
@@ -9,6 +10,7 @@ import { guestDictionary } from "./dictionary.guest";
 export const dictionary = {
   ...commonDictionary,
   ...guestDictionary,
+  ...organizerDictionary,
 };
 
 export type DictionaryKey = keyof typeof dictionary;
