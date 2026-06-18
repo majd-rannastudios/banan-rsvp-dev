@@ -1,19 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 
 declare global {
   interface Window {
     YT?: {
-      Player: new (el: HTMLElement, config: Record<string, unknown>) => YTPlayer;
+      Player: new (el: HTMLElement | string, config: Record<string, unknown>) => YTPlayer;
     };
     onYouTubeIframeAPIReady?: () => void;
   }
 }
 
 interface YTPlayer {
-  mute: () => void;
-  playVideo: () => void;
   seekTo: (seconds: number, allowSeekAhead: boolean) => void;
   getCurrentTime: () => number;
   destroy: () => void;
@@ -21,10 +19,19 @@ interface YTPlayer {
 
 /**
  * Loops a specific clip of a YouTube video as a muted, chrome-free hero
- * background. The native `start`/`end` embed params only stop playback at
- * `end` (they don't loop back to `start`), so a small poll re-seeks once
- * the clip nears its end - the IFrame API has no "loop within range" event
- * to hook instead.
+ * background.
+ *
+ * The <iframe> is rendered directly with autoplay baked into its src, so
+ * playback starts the moment the iframe paints - it does NOT wait for the
+ * IFrame JS API script to load first. The JS API is attached afterward,
+ * purely to seek back to `startSeconds` once playback nears `endSeconds`
+ * (the native start/end embed params only stop there, they don't loop).
+ *
+ * Sized with the standard "oversize + crop" technique rather than
+ * object-fit: object-fit on an iframe only affects the iframe's own box,
+ * not the cross-origin video YouTube renders inside it - YouTube always
+ * letterboxes to preserve aspect ratio instead of cropping, so without
+ * this the clip shows pillarboxed/"landscape" on portrait screens.
  */
 export function YouTubeBackground({
   videoId,
@@ -35,7 +42,7 @@ export function YouTubeBackground({
   startSeconds: number;
   endSeconds: number;
 }) {
-  const hostRef = useRef<HTMLDivElement>(null);
+  const iframeId = useId().replace(/[^a-zA-Z0-9]/g, "");
   const playerRef = useRef<YTPlayer | null>(null);
 
   useEffect(() => {
@@ -46,32 +53,16 @@ export function YouTubeBackground({
     let pollId: ReturnType<typeof setInterval> | undefined;
     let cancelled = false;
 
-    function createPlayer() {
-      if (cancelled || !hostRef.current || !window.YT) return;
-      playerRef.current = new window.YT.Player(hostRef.current, {
-        videoId,
-        playerVars: {
-          start: startSeconds,
-          end: endSeconds,
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          disablekb: 1,
-          modestbranding: 1,
-          rel: 0,
-          fs: 0,
-          playsinline: 1,
-        },
+    function attachController() {
+      if (cancelled || !window.YT) return;
+      playerRef.current = new window.YT.Player(iframeId, {
         events: {
-          onReady: (e: { target: YTPlayer }) => {
-            e.target.mute();
-            e.target.playVideo();
+          onReady: () => {
             pollId = setInterval(() => {
               const player = playerRef.current;
               if (!player) return;
               if (player.getCurrentTime() >= endSeconds - 0.4) {
                 player.seekTo(startSeconds, true);
-                player.playVideo();
               }
             }, 500);
           },
@@ -80,7 +71,7 @@ export function YouTubeBackground({
     }
 
     if (window.YT?.Player) {
-      createPlayer();
+      attachController();
     } else {
       const existing = document.getElementById("youtube-iframe-api");
       if (!existing) {
@@ -92,7 +83,7 @@ export function YouTubeBackground({
       const prev = window.onYouTubeIframeAPIReady;
       window.onYouTubeIframeAPIReady = () => {
         prev?.();
-        createPlayer();
+        attachController();
       };
     }
 
@@ -102,11 +93,23 @@ export function YouTubeBackground({
       playerRef.current?.destroy();
       playerRef.current = null;
     };
-  }, [videoId, startSeconds, endSeconds]);
+  }, [iframeId, startSeconds, endSeconds]);
+
+  const src =
+    `https://www.youtube.com/embed/${videoId}` +
+    `?start=${startSeconds}&end=${endSeconds}&autoplay=1&mute=1&controls=0` +
+    `&disablekb=1&modestbranding=1&rel=0&fs=0&playsinline=1&enablejsapi=1`;
 
   return (
-    <div className="absolute inset-0 overflow-hidden [&_iframe]:absolute [&_iframe]:inset-0 [&_iframe]:h-full [&_iframe]:w-full [&_iframe]:border-0 [&_iframe]:object-cover">
-      <div ref={hostRef} />
+    <div className="absolute inset-0 overflow-hidden">
+      <link rel="preconnect" href="https://www.youtube.com" />
+      <iframe
+        id={iframeId}
+        src={src}
+        title=""
+        allow="autoplay; encrypted-media"
+        className="absolute top-1/2 left-1/2 h-[56.25vw] w-screen min-h-full min-w-[177.78vh] -translate-x-1/2 -translate-y-1/2 border-0"
+      />
     </div>
   );
 }
