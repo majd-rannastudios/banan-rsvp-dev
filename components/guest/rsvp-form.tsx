@@ -1,16 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState, useState } from "react";
 import { useLocale } from "@/lib/i18n/context";
 import { PartySizeStepper } from "@/components/guest/party-size-stepper";
 import { SlotPicker } from "@/components/guest/slot-picker";
 import { TransferChips } from "@/components/guest/transfer-chips";
+import { submitRsvp, type RsvpFormState } from "@/app/i/[token]/rsvp/actions";
 import type { GuestInvite, TransferChoice } from "@/lib/guest/types";
 
+const initialState: RsvpFormState = {};
+
 export function RsvpForm({ invite }: { invite: GuestInvite }) {
-  const { t } = useLocale();
-  const router = useRouter();
+  const { locale, t } = useLocale();
+  const [state, formAction, pending] = useActionState(submitRsvp, initialState);
 
   const [partySize, setPartySize] = useState(invite.partySize || 1);
   const [slotId, setSlotId] = useState<string | null>(
@@ -18,34 +20,17 @@ export function RsvpForm({ invite }: { invite: GuestInvite }) {
   );
   const [transfer, setTransfer] = useState<TransferChoice>(invite.transferChoice);
   const [consent, setConsent] = useState(false);
-  const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!consent) {
-      setError(t("consentRequired"));
-      return;
-    }
-    setError("");
-    setSubmitting(true);
-
-    // TODO(Phase 2/3): replace with a server action calling the
-    // `submit_rsvp` RPC. For now (no Supabase yet) the chosen values are
-    // passed via the URL so the confirmation page can render a real badge.
-    const params = new URLSearchParams({
-      status: "confirmed",
-      party: String(partySize),
-      slot: slotId ?? "",
-      transfer,
-    });
-    setTimeout(() => {
-      router.push(`/i/${invite.token}/confirmation?${params.toString()}`);
-    }, 500);
-  }
+  const error = !consent && state.error === "consent_required" ? t("consentRequired") : state.error ? t("rsvpGenericError") : "";
 
   return (
-    <form onSubmit={handleSubmit} className="pb-28 sm:pb-0">
+    <form action={formAction} className="pb-28 sm:pb-0">
+      <input type="hidden" name="token" value={invite.token} />
+      <input type="hidden" name="party_size" value={partySize} />
+      <input type="hidden" name="slot_id" value={slotId ?? ""} />
+      <input type="hidden" name="transfer" value={transfer} />
+      <input type="hidden" name="language" value={locale} />
+
       <div className="space-y-8">
         <PartySizeStepper value={partySize} onChange={setPartySize} />
         <SlotPicker slots={invite.event.slots} value={slotId} onChange={setSlotId} />
@@ -54,6 +39,8 @@ export function RsvpForm({ invite }: { invite: GuestInvite }) {
         <label className="flex items-start gap-3 border-t border-surface-muted pt-6">
           <input
             type="checkbox"
+            name="consent"
+            required
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
             className="mt-0.5 h-5 w-5 flex-none accent-[#405e2d]"
@@ -70,10 +57,10 @@ export function RsvpForm({ invite }: { invite: GuestInvite }) {
       <div className="fixed inset-x-0 bottom-0 border-t border-surface-muted bg-surface p-4 sm:static sm:mt-10 sm:border-t-0 sm:p-0">
         <button
           type="submit"
-          disabled={submitting}
+          disabled={pending}
           className="min-h-12 w-full bg-interactive px-6 text-[12px] tracking-[0.2em] text-white uppercase transition-colors hover:bg-interactive-hover disabled:opacity-60"
         >
-          {submitting ? t("submitting") : t("submitRsvp")}
+          {pending ? t("submitting") : t("submitRsvp")}
         </button>
       </div>
     </form>

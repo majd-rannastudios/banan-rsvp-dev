@@ -38,6 +38,10 @@ export const guestDictionary = {
     ar: "أوافق على استخدام معلوماتي لمعالجة هذا الحجز وإرسال تواصل بخصوص افتتاح بنان.",
   },
   consentRequired: { en: "Please accept to continue.", ar: "يرجى الموافقة للمتابعة." },
+  rsvpGenericError: {
+    en: "Something went wrong submitting your RSVP. Please try again.",
+    ar: "حدث خطأ أثناء إرسال تأكيدك. يرجى المحاولة مرة أخرى.",
+  },
   submitRsvp: { en: "Submit RSVP", ar: "إرسال التأكيد" },
   submitting: { en: "Submitting…", ar: "جارٍ الإرسال…" },
   back: { en: "Back", ar: "رجوع" },

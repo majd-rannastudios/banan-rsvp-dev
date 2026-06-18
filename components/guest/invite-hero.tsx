@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLocale } from "@/lib/i18n/context";
 import { EventFacts } from "@/components/guest/event-facts";
+import { declineInvite } from "@/app/i/[token]/actions";
 import type { GuestInvite } from "@/lib/guest/types";
 
 export function InviteHero({ invite }: { invite: GuestInvite }) {
@@ -75,12 +76,15 @@ export function InviteHero({ invite }: { invite: GuestInvite }) {
               >
                 {t("acceptInvite")}
               </Link>
-              <Link
-                href={`/i/${invite.token}/declined`}
-                className="flex min-h-12 flex-1 items-center justify-center border border-text px-6 text-[12px] tracking-[0.2em] text-text uppercase transition-colors hover:bg-text hover:text-white"
-              >
-                {t("declineInvite")}
-              </Link>
+              <form action={declineInvite} className="flex-1">
+                <input type="hidden" name="token" value={invite.token} />
+                <button
+                  type="submit"
+                  className="flex min-h-12 w-full items-center justify-center border border-text px-6 text-[12px] tracking-[0.2em] text-text uppercase transition-colors hover:bg-text hover:text-white"
+                >
+                  {t("declineInvite")}
+                </button>
+              </form>
             </div>
           )}
         </div>

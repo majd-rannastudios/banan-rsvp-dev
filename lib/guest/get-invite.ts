@@ -1,55 +1,65 @@
-import type { EventInfo, GuestInvite } from "./types";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
+import type { EventSlot, GuestInvite } from "./types";
 
-/**
- * TEMPORARY mock data layer. There is no Supabase project wired up yet
- * (Phase 2 of the build plan). This stands in for the future
- * `get_invite(p_token)` security-definer RPC call so the guest-facing UI
- * can be built and demoed now; once Supabase exists, only this function's
- * body changes — every page that calls `getInvite()` stays the same.
- */
-
-const EVENT: EventInfo = {
-  name: { en: "Banan Inauguration", ar: "افتتاح بنان" },
-  startsOn: "2026-09-18",
-  endsOn: "2026-09-19",
-  venueName: null, // TBD — see plan §12 open items
-  slots: [
-    {
-      id: "d1-evening",
-      dateLabel: { en: "Fri 18 Sep", ar: "الجمعة ١٨ سبتمبر" },
-      timeLabel: { en: "6:00 PM", ar: "٦:٠٠ م" },
-    },
-    {
-      id: "d1-night",
-      dateLabel: { en: "Fri 18 Sep", ar: "الجمعة ١٨ سبتمبر" },
-      timeLabel: { en: "8:30 PM", ar: "٨:٣٠ م" },
-    },
-    {
-      id: "d2-evening",
-      dateLabel: { en: "Sat 19 Sep", ar: "السبت ١٩ سبتمبر" },
-      timeLabel: { en: "6:00 PM", ar: "٦:٠٠ م" },
-    },
-    {
-      id: "d2-night",
-      dateLabel: { en: "Sat 19 Sep", ar: "السبت ١٩ سبتمبر" },
-      timeLabel: { en: "8:30 PM", ar: "٨:٣٠ م" },
-    },
-  ],
+const DATE_FMT = {
+  en: new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" }),
+  ar: new Intl.DateTimeFormat("ar", { weekday: "short", day: "numeric", month: "short" }),
+};
+const TIME_FMT = {
+  en: new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit" }),
+  ar: new Intl.DateTimeFormat("ar", { hour: "numeric", minute: "2-digit" }),
 };
 
-const MOCK_GUESTS: Record<string, GuestInvite> = {
-  demo: {
-    token: "demo",
-    fullName: "Abdullah Al-Rashid",
-    partySize: 2,
-    preferredSlotId: null,
-    transferChoice: "none",
-    rsvpStatus: "invited",
-    event: EVENT,
-  },
-};
+interface RpcSlot {
+  id: string;
+  slot_date: string;
+  starts_at: string;
+  label_en: string;
+  label_ar: string;
+}
+
+function mapSlot(s: RpcSlot): EventSlot {
+  // Date/time labels are derived from the real timestamp rather than the
+  // stored label_en/label_ar text, since the UI needs the date and time
+  // as two separate strings (label_en/ar store them pre-combined).
+  const startsAt = new Date(s.starts_at);
+  return {
+    id: s.id,
+    dateLabel: { en: DATE_FMT.en.format(startsAt), ar: DATE_FMT.ar.format(startsAt) },
+    timeLabel: { en: TIME_FMT.en.format(startsAt), ar: TIME_FMT.ar.format(startsAt) },
+  };
+}
 
 export async function getInvite(token: string): Promise<GuestInvite | null> {
-  // TODO(Phase 2/3): replace with `supabase.rpc('get_invite', { p_token: token })`
-  return MOCK_GUESTS[token] ?? null;
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("get_invite", { p_token: token });
+
+  if (error) {
+    console.error("get_invite RPC failed", error);
+    return null;
+  }
+  if (!data?.found) return null;
+
+  const event = data.event;
+
+  return {
+    token: data.token,
+    fullName: data.full_name,
+    partySize: data.party_size,
+    preferredSlotId: data.preferred_slot_id,
+    transferChoice: data.transfer_choice,
+    rsvpStatus: data.rsvp_status,
+    event: {
+      // events.name/venue_name aren't bilingual columns in the schema (and
+      // aren't rendered directly anywhere in the UI today - the visible
+      // hero copy comes from the i18n dictionary) - duplicating the single
+      // DB value into both locales is a safe placeholder until/unless that
+      // changes.
+      name: { en: event.name, ar: event.name },
+      startsOn: event.starts_on,
+      endsOn: event.ends_on,
+      venueName: event.venue_name ? { en: event.venue_name, ar: event.venue_name } : null,
+      slots: (event.slots as RpcSlot[]).map(mapSlot),
+    },
+  };
 }
